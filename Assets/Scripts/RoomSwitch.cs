@@ -1,5 +1,6 @@
-using Palmmedia.ReportGenerator.Core.Reporting.Builders.Rendering;
+
 using UnityEngine;
+using System;
 
 public class RoomSwitch : MonoBehaviour
 {
@@ -8,6 +9,9 @@ public class RoomSwitch : MonoBehaviour
 
     public GameObject MainCam;
     public GameObject Player;
+    public static Action<bool> OnStartSlide;
+    public static Action<Vector3> OnSliding;
+    public static Action<bool> OnEndSlide;
 
     private bool _isSlidingHolding = false;
     private Bounds _roomBounds = new Bounds();
@@ -43,6 +47,7 @@ public class RoomSwitch : MonoBehaviour
         {
             _slidingInitialMousePos = Input.mousePosition;
             _slidingInitialCamPos = MainCam.transform.position;
+            OnStartSlide?.Invoke(false);
 
         }
         if (Input.GetMouseButton(1))
@@ -50,11 +55,13 @@ public class RoomSwitch : MonoBehaviour
             _slidingTargetMousePos = Input.mousePosition;
             Vector2 diff = _slidingTargetMousePos- _slidingInitialMousePos;
             float percentage = diff.x / Screen.width;
-            MainCam.transform.position = _slidingInitialCamPos  +  Vector3.right * _roomBounds.extents.x * 2 * percentage;
+            Vector3 offsetValue = Vector3.right * _roomBounds.extents.x * 2 * percentage;
+            MainCam.transform.position = _slidingInitialCamPos  + offsetValue;
+            OnSliding?.Invoke(offsetValue);
         }
         if (Input.GetMouseButtonUp(1)) 
         {
-        
+            OnEndSlide?.Invoke(true);
         }
     }
     void Update()
