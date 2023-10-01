@@ -6,9 +6,7 @@ public class PlayerInteract : MonoBehaviour
 {
     private MemoryObj _currentObject,_previousObject;
     public float InteractionDistance = 1.0f;
-    public float HoldTimer = 1f;
-    private float _startHoldTimer = 0;
-    private bool _isHoldingStuff = false;
+
 
     
     private void OnEnable()
@@ -22,6 +20,7 @@ public class PlayerInteract : MonoBehaviour
     }
     public void Update()
     {
+        
         if (Input.GetMouseButtonDown(0)) 
         {
             if (!_currentObject)
@@ -35,13 +34,14 @@ public class PlayerInteract : MonoBehaviour
         }
        
         CheckObjectHighlight();
+        print(_currentObject);
        
     }
     void CheckObjectHighlight() 
     {
         _currentObject = GetCurrentMemoryObj();
         _currentObject?.Highlight(true);
-        if (_previousObject != _currentObject && _previousObject != null)
+        if (_currentObject == null && _previousObject != null)
         {
             _previousObject.Highlight(false);
         }

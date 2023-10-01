@@ -9,6 +9,7 @@ public class RoomSwitch : MonoBehaviour
 {
 
     public Room[] Rooms;
+    public static Room[] _StaticRooms;
 
     public GameObject MainCam;
     public AnimationCurve SlidingAnimationCurve;
@@ -39,9 +40,18 @@ public class RoomSwitch : MonoBehaviour
         Preparation();
 
     }
+    private void OnEnable()
+    {
+        _StaticRooms = Rooms;
+    }
+    private void OnDisable()
+    {
+        _StaticRooms = null;
 
+    }
     void Preparation() 
     {
+        
         _roomBounds = Utility.GetObjectBound(Rooms[0].gameObject);
         _startCameraPos = new Vector3(_roomBounds.center.x, _roomBounds.center.y + CameraStartPosYOffset, MainCam.transform.position.z);
         MainCam.transform.position = _startCameraPos;
@@ -125,15 +135,16 @@ public class RoomSwitch : MonoBehaviour
 
     }
 
-    Room GetRoomContainsPlayer() 
+    public static Room GetRoomContainsPlayer() 
     {
-        foreach (Room r in Rooms) 
+        foreach (Room r in _StaticRooms) 
         {
             if (r.player!= null)
                 return r;
         }
         return null;
     }
+   
     void Update()
     {
         UpdateSlidingControl();

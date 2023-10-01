@@ -2,6 +2,7 @@
 using UnityEngine;
 using System;
 using System.Collections;
+using Unity.VisualScripting;
 
 public class MemoryObj : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class MemoryObj : MonoBehaviour
     public bool _isBeingHold { get;private set; } = false;
     public bool _canBeRelease { get;private set; } = false;
 
+    public GameObject[] Memory_Objs_Prefab;
+    private GameObject[] _memory_Objs;
 
 
     public Canvas TestCanvas;
@@ -23,8 +26,27 @@ public class MemoryObj : MonoBehaviour
     private void Awake()
     {
         Highlight(false);
+        PrepareMemObjs();
+        GetComponent<MeshRenderer>().enabled = false;
+        
     }
 
+
+    private void OnValidate()
+    {
+       
+    }
+
+    void PrepareMemObjs() 
+    {
+        _memory_Objs = new GameObject[Memory_Objs_Prefab.Length];
+        for (int i = 0; i < _memory_Objs.Length; i++) 
+        {
+            _memory_Objs[i] = Instantiate(Memory_Objs_Prefab[i]);
+            _memory_Objs[i].SetActive(false);
+            _memory_Objs[i].transform.parent = transform;
+        }
+    }
     public void Activate() 
     {
 
@@ -116,13 +138,34 @@ public class MemoryObj : MonoBehaviour
         TestCanvas.enabled = value;
     }
 
-    
-    private void OnTriggerEnter(Collider other)
+    void CheckRoom() 
     {
+        if (RoomSwitch.GetRoomContainsPlayer() == RoomSwitch._StaticRooms[0])
+        {
+            _memory_Objs[0].SetActive(true);
+            _memory_Objs[0].transform.position = transform.position;
+            _memory_Objs[1].SetActive(false);
+            _memory_Objs[2].SetActive(false);
+        }
+        else if (RoomSwitch.GetRoomContainsPlayer() == RoomSwitch._StaticRooms[1])
+        {
+            _memory_Objs[0].SetActive(false);
+            _memory_Objs[1].SetActive(true);
+            _memory_Objs[1].transform.position = transform.position;
+            _memory_Objs[2].SetActive(false);
+        }
+        else if (RoomSwitch.GetRoomContainsPlayer() == RoomSwitch._StaticRooms[2]) 
+        {
+            _memory_Objs[0].SetActive(false);
+            _memory_Objs[1].SetActive(false);
+            _memory_Objs[2].SetActive(true);
+            _memory_Objs[2].transform.position = transform.position;
 
+        }
     }
+
     private void Update()
     {
-        
+        CheckRoom();
     }
 }
