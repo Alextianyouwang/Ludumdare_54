@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using TreeEditor;
+using UnityEngine;
 
 public class PlayerMove : MonoBehaviour
 {
@@ -7,7 +8,7 @@ public class PlayerMove : MonoBehaviour
     private Rigidbody _rb;
     private bool _allowMovement = true;
 
-    private Vector3 _recordedPosition = Vector3.zero;
+
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
@@ -21,34 +22,37 @@ public class PlayerMove : MonoBehaviour
     {
         RoomSwitch.OnStartSlide += PreparePasiveMovement;
         RoomSwitch.OnSliding += PassiveMovement;
-        RoomSwitch.OnEndSlide += ToggelAllowMovement;
+        RoomSwitch.OnEndSlide += FinishPassiveMovement;
     }
     private void OnDisable()
     {
         RoomSwitch.OnStartSlide -= PreparePasiveMovement;
         RoomSwitch.OnSliding -= PassiveMovement;
-        RoomSwitch.OnEndSlide -= ToggelAllowMovement;
+        RoomSwitch.OnEndSlide -= FinishPassiveMovement;
 
     }
 
-    private void PreparePasiveMovement(bool value) 
+    Vector3 PreparePasiveMovement() 
     {
-        ToggelAllowMovement(value);
-        _recordedPosition = transform.position;
+        return transform.position;
     }
-    private void PassiveMovement(Vector3 offsetPos) 
+    Vector3 PassiveMovement(Vector3 target) 
     {
         _rb.isKinematic = true;
-        transform.position = _recordedPosition + offsetPos;
+        _rb.Sleep();
+        transform.position = target;
+        return transform.position;
 
     }
-    private void ToggelAllowMovement(bool value) 
+    Vector3 FinishPassiveMovement() 
     {
-        _allowMovement = value;
+        _rb.isKinematic = false;
+        _rb.WakeUp();
+        return transform.position;
     }
+
     private void FixedUpdate()
     {
-        if (_allowMovement)
             Movement();
 
     }

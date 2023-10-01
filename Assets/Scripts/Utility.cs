@@ -9,6 +9,7 @@ public static class Utility
         MeshRenderer[] rends = obj.GetComponentsInChildren<MeshRenderer>();
         foreach (MeshRenderer rend in rends)
         {
+            b.center = rend.bounds.center;
             b.Encapsulate(rend.bounds);
         }
         return b;
