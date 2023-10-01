@@ -176,8 +176,9 @@ GameObject:
   - component: {fileID: 507461408156173503}
   - component: {fileID: 507461408156173500}
   - component: {fileID: 507461408156173501}
+  - component: {fileID: 8626320333488960562}
   m_Layer: 6
-  m_Name: Ground
+  m_Name: RoomBase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -273,12 +274,25 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 507461408156173491}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: bacebc3af83b0fb41ab2ff3e80e53532, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 13.373583, y: 7.4522405, z: 0.13522196}
   m_Center: {x: 0, y: 0, z: 4.338372}
+--- !u!65 &8626320333488960562
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 507461408156173491}
+  m_Material: {fileID: 13400000, guid: bacebc3af83b0fb41ab2ff3e80e53532, type: 2}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 13.827115, y: 7.693635, z: 0.29630852}
+  m_Center: {x: 0, y: 0, z: -4.5233793}
 --- !u!1 &507461408412281183
 GameObject:
   m_ObjectHideFlags: 0

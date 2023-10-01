@@ -77,7 +77,7 @@ public class PlayerMove : MonoBehaviour
     private void CheckInput() 
     {
         _horizontal = new Vector3(Input.GetAxisRaw("Horizontal"), 0f, 0f);
-        
+        _vertical = new Vector3(0f, 0f, Input.GetAxisRaw("Vertical"));
     }
     private void Movement()
     {

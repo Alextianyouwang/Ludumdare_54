@@ -12,6 +12,7 @@ public class RoomSwitch : MonoBehaviour
 
     public GameObject MainCam;
     public AnimationCurve SlidingAnimationCurve;
+    public float CameraStartPosYOffset = 1f;
     public static Func<Vector3> OnStartSlide;
     public static Func<Vector3,Vector3,Vector3> OnSliding;
     public static Func<Vector3> OnEndSlide;
@@ -42,7 +43,7 @@ public class RoomSwitch : MonoBehaviour
     void Preparation() 
     {
         _roomBounds = Utility.GetObjectBound(Rooms[0].gameObject);
-        _startCameraPos = new Vector3(_roomBounds.center.x, _roomBounds.center.y, MainCam.transform.position.z);
+        _startCameraPos = new Vector3(_roomBounds.center.x, _roomBounds.center.y + CameraStartPosYOffset, MainCam.transform.position.z);
         MainCam.transform.position = _startCameraPos;
 
         for (int i = 0; i < Rooms.Length; i++) 
