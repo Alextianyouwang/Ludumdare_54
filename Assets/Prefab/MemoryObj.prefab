@@ -216,7 +216,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Activatable: 0
   Moveable: 0
-  testCanvas: {fileID: 5926863449240489350}
+  TestCanvas: {fileID: 5926863449240489350}
+  ActivateEffect: {fileID: 3048823596865365185, guid: fe0e96da9aa7b1143a3c0a895adf9083, type: 3}
 --- !u!135 &-6536766023591149712
 SphereCollider:
   m_ObjectHideFlags: 0

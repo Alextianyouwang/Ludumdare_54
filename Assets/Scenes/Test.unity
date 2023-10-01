@@ -339,6 +339,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   InteractionDistance: 1
+  HoldTimer: 1
 --- !u!1001 &201188045
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -564,6 +565,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1071108721}
     m_Modifications:
+    - target: {fileID: -8750970228864437648, guid: 8bb08464cf8d31c4793515201badf02a, type: 3}
+      propertyPath: Moveable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8750970228864437648, guid: 8bb08464cf8d31c4793515201badf02a, type: 3}
+      propertyPath: Activatable
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: -6536766023591149712, guid: 8bb08464cf8d31c4793515201badf02a, type: 3}
       propertyPath: m_Radius
       value: 1
@@ -576,6 +585,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 67ec8f129c0d8bc428a9d493fbcbb2c1, type: 2}
+    - target: {fileID: 1058097130612567053, guid: 8bb08464cf8d31c4793515201badf02a, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1058097130612567054, guid: 8bb08464cf8d31c4793515201badf02a, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -999,6 +1012,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1071108721}
     m_Modifications:
+    - target: {fileID: -8750970228864437648, guid: 8bb08464cf8d31c4793515201badf02a, type: 3}
+      propertyPath: Moveable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8750970228864437648, guid: 8bb08464cf8d31c4793515201badf02a, type: 3}
+      propertyPath: Activatable
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: -6536766023591149712, guid: 8bb08464cf8d31c4793515201badf02a, type: 3}
       propertyPath: m_Radius
       value: 1
@@ -1011,6 +1032,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: e71ceb2b668cf8a43aa0c85c9fd9423e, type: 2}
+    - target: {fileID: 1058097130612567053, guid: 8bb08464cf8d31c4793515201badf02a, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1058097130612567054, guid: 8bb08464cf8d31c4793515201badf02a, type: 3}
       propertyPath: m_RootOrder
       value: 1

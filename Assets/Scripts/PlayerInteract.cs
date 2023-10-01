@@ -6,6 +6,10 @@ public class PlayerInteract : MonoBehaviour
 {
     private MemoryObj _currentObject,_previousObject;
     public float InteractionDistance = 1.0f;
+    public float HoldTimer = 1f;
+    private float _startHoldTimer = 0;
+    private bool _isHoldingStuff = false;
+
     
     private void OnEnable()
     {
@@ -20,9 +24,16 @@ public class PlayerInteract : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0)) 
         {
-            _currentObject?.Activate();
+            if (!_currentObject)
+                return;
+            if (!_currentObject._hasBeenActivated)
+                _currentObject.Activate();
+            else if (_currentObject._hasBeenActivated && !_currentObject._isBeingHold)
+                _currentObject.GotHold(transform);
+            else if (_currentObject._hasBeenActivated && _currentObject._isBeingHold)
+                _currentObject.GotReleased();
         }
-
+       
         CheckObjectHighlight();
        
     }
