@@ -13,7 +13,7 @@ public class RoomSwitch : MonoBehaviour
     public GameObject MainCam;
     public AnimationCurve SlidingAnimationCurve;
     public static Func<Vector3> OnStartSlide;
-    public static Func<Vector3,Vector3> OnSliding;
+    public static Func<Vector3,Vector3,Vector3> OnSliding;
     public static Func<Vector3> OnEndSlide;
 
     private bool _hasEnteredSliding = false;
@@ -113,7 +113,7 @@ public class RoomSwitch : MonoBehaviour
             float percentage = SlidingAnimationCurve.Evaluate(process / timeToComplete);
             Vector3 finalCamPos = Vector3.Lerp (slidingInitialCamPos,slidingTargetCameraPos,percentage) ;
             Vector3 finalPlayerPos = slidingInitialPlayerPos + boundOffset * Vector3.right;
-            OnSliding?.Invoke( finalPlayerPos);
+            OnSliding?.Invoke( finalPlayerPos,slidingInitialPlayerPos);
             MainCam.transform.position = finalCamPos;
 
 
