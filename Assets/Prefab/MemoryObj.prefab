@@ -153,9 +153,9 @@ MonoBehaviour:
   HaveActivateFunction: 1
   HaveReleaseFunction: 1
   Memory_Objs_Prefab:
-  - {fileID: 8006603308024753799, guid: d4142f34209ace84ea0ac413dd7edb19, type: 3}
-  - {fileID: 1434144846214702531, guid: 6599caea07d54b44581e5cb8e3e0d5d3, type: 3}
-  - {fileID: 4754765421403213784, guid: 1f42153ae2d635844a95be510cf17761, type: 3}
+  - {fileID: 3446264282793789155, guid: bd11851306584d94bb3639fa498986a1, type: 3}
+  - {fileID: 5830365364720721195, guid: b4ab082d05434024f9ca3568ee6dfd8e, type: 3}
+  - {fileID: 7828057435510553991, guid: fa7857633f118db4da95de7a25c20910, type: 3}
   TestCanvas: {fileID: 5926863449240489350}
   ActivateEffect: {fileID: 3048823596865365185, guid: fe0e96da9aa7b1143a3c0a895adf9083, type: 3}
 --- !u!135 &-6536766023591149712
@@ -169,7 +169,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &2002230062
 MeshRenderer:

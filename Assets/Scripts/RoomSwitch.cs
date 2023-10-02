@@ -38,7 +38,7 @@ public class RoomSwitch : MonoBehaviour
     void Start()
     {
         Preparation();
-
+        SetStartRoom(3);
     }
     private void OnEnable()
     {
@@ -61,6 +61,20 @@ public class RoomSwitch : MonoBehaviour
             Rooms[i].transform.position = Rooms[0].transform.position +
                 new Vector3 (i * _roomBounds.extents.x * 2, 0, 0) ;
         }
+    }
+
+    void SetStartRoom(int num) 
+    {
+        Vector3 initialCamerapos = MainCam.transform.position;
+        Vector3 initialPlayerPos = OnStartSlide.Invoke();
+        Vector3 diff = Rooms[num - 1].transform.position - Rooms[0].transform.position;
+       // float boundOffset = (toRight ? -1 : 1) * _roomBounds.extents.x * 2;
+      /*  if (boundOffset + initialPlayerPos.x < Rooms[0].transform.position.x - _roomBounds.extents.x
+              || boundOffset + initialPlayerPos.x > Rooms[0].transform.position.x + _roomBounds.extents.x * 2 * Rooms.Length - _roomBounds.extents.x)
+            boundOffset = 0;
+        if()*/
+        OnSliding.Invoke(initialPlayerPos + diff, initialPlayerPos);
+        MainCam.transform.position = initialCamerapos + diff;
     }
 
     void UpdateSlidingControl()
