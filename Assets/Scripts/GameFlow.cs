@@ -8,18 +8,47 @@ public class GameFlow : MonoBehaviour
     // 1. Player Hold Beer Bottle, Unlock Surrounding. 
     // 2.  When enter Room 2 while holding beer, unlock HDD, Trashcan, Package (Wrong Cable)
 
-    public GameObject Room3_BlurCard;
+    public GameObject[] BlurCard_GroupOne;
+    public GameObject[] BlurCard_GroupTwo;
+    public GameObject[] BlurCard_GroupThree;
+    public GameObject[] BlurCard_GroupFour;
     public PlayerInteract PlayerInteract;
     private float _timer;
 
     void Start()
     {
-        Room3_BlurCard.SetActive(true);
-        Room3_BlurCard.GetComponentInChildren<Renderer>().sharedMaterial.SetFloat("_Weight", 0.2f);
+        ToggleBlurCard(BlurCard_GroupOne, true);
+        SetBlurCardWeight(BlurCard_GroupOne, 0.2f);
+
+        ToggleBlurCard(BlurCard_GroupTwo, true);
+        SetBlurCardWeight(BlurCard_GroupTwo, 0.2f);
+
+        ToggleBlurCard(BlurCard_GroupThree, true);
+        SetBlurCardWeight(BlurCard_GroupThree, 0.2f);
+
+
+        ToggleBlurCard(BlurCard_GroupFour, true);
+        SetBlurCardWeight(BlurCard_GroupFour, 0.2f);
+
+
 
         Act_One_GrabBeer();
     }
 
+    void ToggleBlurCard(GameObject[] group, bool on) 
+    {
+        foreach (GameObject g in group)
+            g.SetActive(on);
+    }
+    void SetBlurCardWeight(GameObject[] group, float target) 
+    {
+        foreach (GameObject g in group) 
+        {
+            MaterialPropertyBlock mpb = new MaterialPropertyBlock();
+            mpb.SetFloat("_Weight", target);
+            g.GetComponent<Renderer>().SetPropertyBlock(mpb);
+        }
+    }
 
     void Act_One_GrabBeer() 
     {
@@ -39,7 +68,7 @@ public class GameFlow : MonoBehaviour
 
     void Fade_Room3_BlurCard() 
     {
-        Room3_BlurCard.GetComponentInChildren<Renderer>().sharedMaterial.SetFloat("_Weight", Mathf.Lerp(0.2f,0f, (Time.time - _timer) / 2f));
+        SetBlurCardWeight(BlurCard_GroupOne, Mathf.Lerp(0.2f, 0f, (Time.time - _timer) / 2f));
     }
     bool DisableRoom3_BlurCard_WaitSeconds_ExitCondition() 
     {
@@ -47,7 +76,7 @@ public class GameFlow : MonoBehaviour
     }
     void DisableRoom3_BlurCard() 
     {
-        Room3_BlurCard.SetActive(false);
+        ToggleBlurCard(BlurCard_GroupOne, false);
     }
 
     void SetTimer() 
@@ -64,10 +93,5 @@ public class GameFlow : MonoBehaviour
         }
         afterDone?.Invoke();
     }
-    IEnumerator WaitSeconds(Action before, float time, Action after)
-    {
-        before.Invoke();
-        yield return new WaitForSeconds(time);
-        after.Invoke();
-    }
+
 }
