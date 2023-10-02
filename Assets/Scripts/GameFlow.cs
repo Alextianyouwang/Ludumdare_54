@@ -162,7 +162,7 @@ public class GameFlow : MonoBehaviour
     {
         ToggleBlurCard(BlurCard_GroupTwo, false);
         Cable.SetActive(true);
-        //HDD.SetActive(true);
+        HDD.SetActive(true);
         TrashCan.SetActive(true);
 
         Act_Three_InteractWithRoom2();
@@ -317,7 +317,7 @@ public class GameFlow : MonoBehaviour
     bool Bin_Enter_Room1_ExitCondition()
     {
 
-        return PlayerInteract._previousHoldingObject.name == "NewTrashCanFromRoom3"
+        return (PlayerInteract._previousHoldingObject.name == "NewTrashCanFromRoom3" || PlayerInteract._previousHoldingObject.name == "TrashCan")
             && PlayerInteract._previousHoldingObject.InThisRoom == RoomSwitch._StaticRooms[0]
             && RoomSwitch.GetRoomContainsPlayer() == RoomSwitch._StaticRooms[0]
             && PlayerInteract._currentHoldingObject == null;

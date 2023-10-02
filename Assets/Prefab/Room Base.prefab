@@ -674,6 +674,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Room01
       objectReference: {fileID: 0}
+    - target: {fileID: 6003629765225080604, guid: 8c8e1776431672d4aa381cf5920087d4, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6348665741327449510, guid: 8c8e1776431672d4aa381cf5920087d4, type: 3}
       propertyPath: m_RootOrder
       value: 2

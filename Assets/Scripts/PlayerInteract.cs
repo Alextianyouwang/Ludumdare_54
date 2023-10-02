@@ -23,7 +23,10 @@ public class PlayerInteract : MonoBehaviour
     }
     public void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.Escape)) 
+        {
+            Application.Quit();
+        }
         if (Input.GetMouseButtonDown(0)) 
         {
             if (!_currentObject)
