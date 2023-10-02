@@ -3,16 +3,23 @@ using UnityEngine;
 
 public static class Utility 
 {
-    public static Bounds GetObjectBound(GameObject obj)
+    public static Bounds GetObjectBound(GameObject go)
     {
-        Bounds b = new Bounds();
-        MeshRenderer[] rends = obj.GetComponentsInChildren<MeshRenderer>();
-        foreach (MeshRenderer rend in rends)
+        Renderer[] renderers = go.GetComponentsInChildren<Renderer>();
+
+        if (renderers.Length > 0)
         {
-            b.center = rend.bounds.center;
-            b.Encapsulate(rend.bounds);
+            Bounds bounds = renderers[0].bounds;
+            for (int i = 1, ni = renderers.Length; i < ni; i++)
+            {
+                bounds.Encapsulate(renderers[i].bounds);
+            }
+            return bounds;
         }
-        return b;
+        else
+        {
+            return new Bounds();
+        }
     }
 
     public static Vector3 ScreenToWorldPoint(Vector2 screenPoint, string mask)
