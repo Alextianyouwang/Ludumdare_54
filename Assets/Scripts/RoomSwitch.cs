@@ -68,11 +68,7 @@ public class RoomSwitch : MonoBehaviour
         Vector3 initialCamerapos = MainCam.transform.position;
         Vector3 initialPlayerPos = OnStartSlide.Invoke();
         Vector3 diff = Rooms[num - 1].transform.position - Rooms[0].transform.position;
-       // float boundOffset = (toRight ? -1 : 1) * _roomBounds.extents.x * 2;
-      /*  if (boundOffset + initialPlayerPos.x < Rooms[0].transform.position.x - _roomBounds.extents.x
-              || boundOffset + initialPlayerPos.x > Rooms[0].transform.position.x + _roomBounds.extents.x * 2 * Rooms.Length - _roomBounds.extents.x)
-            boundOffset = 0;
-        if()*/
+
         OnSliding.Invoke(initialPlayerPos + diff, initialPlayerPos);
         MainCam.transform.position = initialCamerapos + diff;
     }

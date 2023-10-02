@@ -40,9 +40,15 @@ public class PlayerInteract : MonoBehaviour
     {
         _currentObject = GetCurrentMemoryObj();
         _currentObject?.Highlight(true);
+        //if (_currentObject!= _previousObject && _currentObject == null && _previousObject!= null)
         if (_currentObject == null && _previousObject != null)
         {
             _previousObject.Highlight(false);
+        }
+        else if (_currentObject != _previousObject && _currentObject != null && _previousObject != null) 
+        {
+            _previousObject.Highlight(false);
+
         }
         _previousObject = _currentObject;
     }
