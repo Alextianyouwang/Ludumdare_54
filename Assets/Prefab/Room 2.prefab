@@ -7,9 +7,13 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 211588563249468830, guid: 27f6ef5963730f44aab41b56af38370a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -6.6
+      objectReference: {fileID: 0}
     - target: {fileID: 507461408136228802, guid: 27f6ef5963730f44aab41b56af38370a, type: 3}
       propertyPath: m_Name
-      value: Room
+      value: Room 2
       objectReference: {fileID: 0}
     - target: {fileID: 507461408136228813, guid: 27f6ef5963730f44aab41b56af38370a, type: 3}
       propertyPath: m_RootOrder
