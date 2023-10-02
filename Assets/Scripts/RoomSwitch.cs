@@ -124,7 +124,8 @@ public class RoomSwitch : MonoBehaviour
             float percentage = SlidingAnimationCurve.Evaluate(process / timeToComplete);
             Vector3 finalCamPos = Vector3.Lerp (slidingInitialCamPos,slidingTargetCameraPos,percentage) ;
             Vector3 finalPlayerPos = slidingInitialPlayerPos + boundOffset * Vector3.right;
-            OnSliding?.Invoke( finalPlayerPos,slidingInitialPlayerPos);
+            if (boundOffset != 0)
+                OnSliding?.Invoke( finalPlayerPos,slidingInitialPlayerPos);
             MainCam.transform.position = finalCamPos;
 
 

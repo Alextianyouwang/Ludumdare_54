@@ -1,5 +1,6 @@
 ﻿
 using UnityEngine;
+using System;
 
 public class PlayerMove : MonoBehaviour
 {
@@ -8,17 +9,34 @@ public class PlayerMove : MonoBehaviour
     private Rigidbody _rb;
     private bool _allowMovement = true;
     private GameObject _duplicant;
+    public static Action<float> OnSharePlayerSpeed;
+    public static Action<float> OnShareDistanceMoved;
+    Vector3 _currentpos, _prevPos;
+    private float _totalDist = 0;
+
 
     private void Awake()
     {
+
         _rb = GetComponent<Rigidbody>();
         SetupDuplicant();
     }
     private void Update()
     {
- 
+        GetSpeed();
         if (_allowMovement)
         CheckInput();
+    }
+
+    void GetSpeed() 
+    {
+        _currentpos = transform.position;
+        float diff = (_currentpos - _prevPos).magnitude;
+        _totalDist += diff;
+        OnSharePlayerSpeed?.Invoke(diff/Time.deltaTime);
+        OnShareDistanceMoved?.Invoke(_totalDist);
+        _prevPos = _currentpos;
+       
     }
     private void OnEnable()
     {
@@ -40,6 +58,7 @@ public class PlayerMove : MonoBehaviour
         _duplicant = new GameObject();
         _duplicant.transform.SetParent(GameObject.Find("--- Actors ---").transform);
         _duplicant.name = "Player_Shadow";
+        _duplicant.transform.localScale  = transform.localScale;
         _duplicant.AddComponent<MeshRenderer>().material = GetComponent<MeshRenderer>().material;
         _duplicant.AddComponent<MeshFilter>().mesh = GetComponent<MeshFilter>().mesh;
         _duplicant.SetActive(false);
@@ -84,6 +103,7 @@ public class PlayerMove : MonoBehaviour
         _rb.isKinematic = false;
         Vector3 force = (_horizontal + _vertical).normalized * _moveSpeed;
         _rb.AddForce(force, ForceMode.Force);
+    
     }
     
 }

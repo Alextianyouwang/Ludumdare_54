@@ -34,7 +34,6 @@ public class PlayerInteract : MonoBehaviour
         }
        
         CheckObjectHighlight();
-        print(_currentObject);
        
     }
     void CheckObjectHighlight() 
