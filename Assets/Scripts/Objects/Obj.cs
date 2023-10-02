@@ -2,19 +2,14 @@
 using UnityEngine;
 using System;
 using System.Collections;
-using Unity.VisualScripting;
 
-public class MemoryObj : MonoBehaviour
+public class Obj : MonoBehaviour
 {
-    public bool HaveActivateFunction = true;
-    public bool HaveReleaseFunction = true;
-    public bool _hasBeenActivated { get; private set; } = false;
-    public bool _isBeingHold { get;private set; } = false;
-    public bool _canBeRelease { get;private set; } = false;
+    public bool _isBeingHold { get; private set; } = false;
+    public bool _canBeRelease { get; private set; } = false;
 
     public GameObject[] Memory_Objs_Prefab;
     private GameObject[] _memory_Objs;
-
 
     public Canvas TestCanvas;
     public GameObject ActivateEffect;
@@ -23,73 +18,59 @@ public class MemoryObj : MonoBehaviour
 
     public float DistToPlayer { get; set; } = 0f;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         Highlight(false);
         PrepareMemObjs();
         GetComponent<MeshRenderer>().enabled = false;
-        
+
     }
 
-
-    private void OnValidate()
-    {
-       
-    }
-
-    void PrepareMemObjs() 
+    void PrepareMemObjs()
     {
         _memory_Objs = new GameObject[Memory_Objs_Prefab.Length];
-        for (int i = 0; i < _memory_Objs.Length; i++) 
+        for (int i = 0; i < _memory_Objs.Length; i++)
         {
             _memory_Objs[i] = Instantiate(Memory_Objs_Prefab[i]);
             _memory_Objs[i].SetActive(false);
             _memory_Objs[i].transform.parent = transform;
         }
     }
-    public void Activate() 
-    {
 
-        if (_hasBeenActivated)
-            return;
-        if (!_hasBeenActivated)
-            _hasBeenActivated = true;
-
-        ActivateFunction();
-
-     
-    }
-    public void ActivateFunction() 
+    public void ActivateFunction()
     {
         PlayEffect(Color.white);
     }
 
-    public void PlayEffect(Color color) 
+    public void PlayEffect(Color color)
     {
         GameObject effect = Instantiate(ActivateEffect);
         ParticleSystem fx = effect.GetComponent<ParticleSystem>();
         ParticleSystem.MainModule main = fx.main;
         effect.transform.position = transform.position;
         main.startColor = color;
-         fx.Play();
+        fx.Play();
     }
 
-    public void GotHold(Transform target) 
+    public void GotHold(Transform target)
     {
 
         if (_isBeingHold)
             return;
         if (!_isBeingHold)
             _isBeingHold = true;
+
+        ActivateFunction();
+
         StartCoroutine(SnapToPos(target, 0.2f, StartContinueSnapToPos));
     }
 
-    IEnumerator SnapToPos(Transform target , float time, Action<Transform> next) 
+    IEnumerator SnapToPos(Transform target, float time, Action<Transform> next)
     {
         float progress = 0;
         Vector3 startPos = transform.position;
-        
-        while (progress < time) 
+
+        while (progress < time)
         {
             progress += Time.deltaTime;
             float percent = progress / time;
@@ -98,13 +79,13 @@ public class MemoryObj : MonoBehaviour
         }
         next?.Invoke(target);
     }
-    void StartContinueSnapToPos(Transform target) 
+    void StartContinueSnapToPos(Transform target)
     {
-        StartCoroutine(ContinueSnapToPos(target, ContinueSnappingExitCondition,ResetCanbeRelease));
+        StartCoroutine(ContinueSnapToPos(target, ContinueSnappingExitCondition, ResetCanbeRelease));
     }
-    IEnumerator ContinueSnapToPos(Transform target,Func<bool> exitCondition,Action next) 
+    IEnumerator ContinueSnapToPos(Transform target, Func<bool> exitCondition, Action next)
     {
-        while (!exitCondition.Invoke()) 
+        while (!exitCondition.Invoke())
         {
             transform.position = target.position;
             yield return null;
@@ -112,33 +93,33 @@ public class MemoryObj : MonoBehaviour
         next?.Invoke();
     }
 
-    void ResetCanbeRelease() 
+    void ResetCanbeRelease()
     {
         _canBeRelease = false;
         _isBeingHold = false;
         ReleaseFunction();
     }
 
-    void ReleaseFunction() 
+    void ReleaseFunction()
     {
         PlayEffect(Color.yellow);
     }
 
-    public void GotReleased() 
+    public void GotReleased()
     {
         _canBeRelease = true;
     }
 
-    bool ContinueSnappingExitCondition() 
+    bool ContinueSnappingExitCondition()
     {
         return _canBeRelease;
     }
-    public void Highlight(bool value) 
+    public void Highlight(bool value)
     {
         TestCanvas.enabled = value;
     }
 
-    void CheckRoom() 
+    void CheckRoom()
     {
         if (RoomSwitch.GetRoomContainsPlayer() == RoomSwitch._StaticRooms[0])
         {
@@ -154,7 +135,7 @@ public class MemoryObj : MonoBehaviour
             _memory_Objs[1].transform.position = transform.position;
             _memory_Objs[2].SetActive(false);
         }
-        else if (RoomSwitch.GetRoomContainsPlayer() == RoomSwitch._StaticRooms[2]) 
+        else if (RoomSwitch.GetRoomContainsPlayer() == RoomSwitch._StaticRooms[2])
         {
             _memory_Objs[0].SetActive(false);
             _memory_Objs[1].SetActive(false);
@@ -164,7 +145,7 @@ public class MemoryObj : MonoBehaviour
         }
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         CheckRoom();
     }

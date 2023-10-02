@@ -6,8 +6,6 @@ public class PlayerInteract : MonoBehaviour
 {
     private MemoryObj _currentObject,_previousObject;
     public float InteractionDistance = 1.0f;
-
-
     
     private void OnEnable()
     {
@@ -25,11 +23,10 @@ public class PlayerInteract : MonoBehaviour
         {
             if (!_currentObject)
                 return;
-            if (!_currentObject._hasBeenActivated)
-                _currentObject.Activate();
-            else if (_currentObject._hasBeenActivated && !_currentObject._isBeingHold)
+
+          if ( !_currentObject._isBeingHold)
                 _currentObject.GotHold(transform);
-            else if (_currentObject._hasBeenActivated && _currentObject._isBeingHold)
+            else if ( _currentObject._isBeingHold)
                 _currentObject.GotReleased();
         }
        
@@ -40,21 +37,12 @@ public class PlayerInteract : MonoBehaviour
     {
         _currentObject = GetCurrentMemoryObj();
         _currentObject?.Highlight(true);
-        //if (_currentObject!= _previousObject && _currentObject == null && _previousObject!= null)
         if (_currentObject == null && _previousObject != null)
-        {
             _previousObject.Highlight(false);
-        }
         else if (_currentObject != _previousObject && _currentObject != null && _previousObject != null) 
-        {
             _previousObject.Highlight(false);
 
-        }
         _previousObject = _currentObject;
-    }
-    private void FixedUpdate()
-    {
-       
     }
 
     MemoryObj GetCurrentMemoryObj() 
