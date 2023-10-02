@@ -6,6 +6,7 @@ public class PlayerInteract : MonoBehaviour
 {
     public MemoryObj _currentObject { get; set; }
     public MemoryObj _currentHoldingObject { get; set; }
+    public MemoryObj _previousHoldingObject { get; set; }
     public MemoryObj _previousObject { get; set; }
     public float InteractionDistance = 1.0f;
     
@@ -38,7 +39,8 @@ public class PlayerInteract : MonoBehaviour
                 _currentHoldingObject = null;
             }
         }
-       
+
+        _previousHoldingObject = _currentHoldingObject== null? _previousHoldingObject: _currentHoldingObject;
         CheckObjectHighlight();
        
     }

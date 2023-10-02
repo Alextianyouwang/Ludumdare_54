@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Unity.VisualScripting;
 
 public class GameFlow : MonoBehaviour
 {
@@ -21,6 +22,7 @@ public class GameFlow : MonoBehaviour
     public GameObject Cable;
     public GameObject TrashCan;
     public GameObject NewCableFromReciept;
+    public GameObject NewBinFromRoom3;
     public GameObject EmptyPrefab;
     public PlayerInteract PlayerInteract;
     public Color BlurCardTint;
@@ -66,6 +68,7 @@ public class GameFlow : MonoBehaviour
         HDD.SetActive(false);
         Cable.SetActive(false);
         TrashCan.SetActive(false);
+        NewBinFromRoom3.SetActive(false);
         NewCableFromReciept.SetActive(false);
 
 
@@ -159,47 +162,106 @@ public class GameFlow : MonoBehaviour
 
     bool Act_Two_RealseBeer_ExitCondition() 
     {
-      
-        return !PlayerInteract._currentHoldingObject  && RoomSwitch.GetRoomContainsPlayer() == RoomSwitch._StaticRooms[1];
+        if (!PlayerInteract._currentHoldingObject)
+            return false;
+
+        return PlayerInteract._currentHoldingObject.name == "Beer"
+            && RoomSwitch.GetRoomContainsPlayer() == RoomSwitch._StaticRooms[1];
+           
+        //return !PlayerInteract._currentHoldingObject  && RoomSwitch.GetRoomContainsPlayer() == RoomSwitch._StaticRooms[1];
     }
 
     void Act_Three_InteractWithRoom2()
     {
-        StartCoroutine(GameEvent(null, null, Check_Room2_Interaction, Act_Three_Interaction_ExitCondition));
+        StartCoroutine(GameEvent(null, null, Start_Disable_Room3_Cable, Cable_Enter_Room3_ExitCondition));
+        StartCoroutine(GameEvent(null, null, Start_Disable_HDD, HDD_Enter_Room3_ExitCondition));
+        StartCoroutine(GameEvent(null, null, Start_Disable_Room3_Bin, Bin_Enter_Room3_ExitCondition));
     }
 
-    void Check_Room2_Interaction()
+    #region Room3 Cable Interaction
+    void Start_Disable_Room3_Cable()
     {
         StartCoroutine(GameEvent(SetTimer, null, Delay_Disable_Room3_Cable, One_Seconds_ExitCondition));
-       
- 
     }
-
-    void Delay_Disable_Room3_Cable() 
+    void Delay_Disable_Room3_Cable()
     {
         PlayerInteract._currentHoldingObject.ActivateFunction();
         PlayerInteract._currentHoldingObject.gameObject.SetActive(false);
         StartCoroutine(GameEvent(SetTimer, Room3_Cable_Unvail_Animation, Disable_Room3_Cable_BlurCard, Two_Seconds_ExitCondition));
     }
 
-    void Room3_Cable_Unvail_Animation() 
+    void Room3_Cable_Unvail_Animation()
     {
-        SetBlurCardWeight(BlurCard_Room3_Receipt, Mathf.Lerp(0.2f, 0f, (Time.time - _timer) / 1f));
+        SetBlurCardWeight(BlurCard_Room3_Receipt, Mathf.Lerp(0.2f, 0f, (Time.time - _timer) / 2f));
     }
 
-    void Disable_Room3_Cable_BlurCard() 
+    void Disable_Room3_Cable_BlurCard()
     {
         ToggleBlurCard(BlurCard_Room3_Receipt, false);
         NewCableFromReciept.SetActive(true);
         NewCableFromReciept.GetComponent<MemoryObj>().PlayEffect(Color.cyan);
     }
 
-    bool Act_Three_Interaction_ExitCondition()
+    bool Cable_Enter_Room3_ExitCondition()
     {
         if (!PlayerInteract._currentHoldingObject)
             return false;
         return PlayerInteract._currentHoldingObject.name == "Cable" && RoomSwitch.GetRoomContainsPlayer() == RoomSwitch._StaticRooms[2];
 
+    }
+    #endregion
+
+    #region Room3 HDD Interaction
+    void Start_Disable_HDD()
+    {
+        StartCoroutine(GameEvent(SetTimer, null, Delay_Disable_HDD, One_Seconds_ExitCondition));
+    }
+
+    void Delay_Disable_HDD()
+    {
+        PlayerInteract._currentHoldingObject.ActivateFunction();
+        PlayerInteract._currentHoldingObject.gameObject.SetActive(false);
+    }
+
+
+    bool HDD_Enter_Room3_ExitCondition()
+    {
+        if (!PlayerInteract._currentHoldingObject)
+            return false;
+        return PlayerInteract._currentHoldingObject.name == "HDD" && RoomSwitch.GetRoomContainsPlayer() == RoomSwitch._StaticRooms[2];
+    }
+
+    #endregion 
+
+    void Start_Disable_Room3_Bin() 
+    {
+        StartCoroutine(GameEvent(SetTimer, null, Delay_Disable_Bin, One_Seconds_ExitCondition));
+    }
+
+    void Delay_Disable_Bin() 
+    {
+        PlayerInteract._currentHoldingObject.ActivateFunction();
+        PlayerInteract._currentHoldingObject.gameObject.SetActive(false);
+        StartCoroutine(GameEvent(SetTimer, Room3_Bin_Unvail_Animation, Disable_Room3_Bin_BlurCard, Two_Seconds_ExitCondition));
+    }
+
+    void Room3_Bin_Unvail_Animation() 
+    {
+        SetBlurCardWeight(BlurCard_Room3_TrashCan, Mathf.Lerp(0.2f, 0f, (Time.time - _timer) / 2f));
+    }
+
+    void Disable_Room3_Bin_BlurCard() 
+    {
+        ToggleBlurCard(BlurCard_Room3_TrashCan, false);
+        NewBinFromRoom3.SetActive(true);
+        NewBinFromRoom3.GetComponent<MemoryObj>().PlayEffect(Color.cyan);
+    }
+
+    bool Bin_Enter_Room3_ExitCondition() 
+    {
+        if (!PlayerInteract._currentHoldingObject)
+            return false;
+        return PlayerInteract._currentHoldingObject.name == "TrashCan" && RoomSwitch.GetRoomContainsPlayer() == RoomSwitch._StaticRooms[2];
     }
 
     bool Two_Seconds_ExitCondition()
