@@ -16,6 +16,7 @@ public class MemoryObj : MonoBehaviour
     public GameObject ActivateEffect;
 
     public static Action<MemoryObj> OnInteract;
+    public Action OnRelease;
 
     public Room InThisRoom { get; private set; }
 
@@ -106,6 +107,7 @@ public class MemoryObj : MonoBehaviour
     void ReleaseFunction()
     {
         PlayEffect(Color.yellow);
+        OnRelease?.Invoke();
     }
 
     public void GotReleased()

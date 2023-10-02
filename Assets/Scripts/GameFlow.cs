@@ -12,6 +12,7 @@ public class GameFlow : MonoBehaviour
     public GameObject[] BlurCard_GroupTwo;
     public GameObject[] BlurCard_GroupThree;
     public GameObject[] BlurCard_GroupFour;
+    public GameObject[] BlurCard_GroupFive;
     public GameObject[] BlurCard_Room3_TrashCan;
     public GameObject[] BlurCard_Room3_Receipt;
     public GameObject[] BlurCard_Room3_HDD;
@@ -49,6 +50,11 @@ public class GameFlow : MonoBehaviour
         ToggleBlurCard(BlurCard_GroupFour, true);
         SetBlurCardWeight(BlurCard_GroupFour, 0.2f);
         SetBlurCardTint(BlurCard_GroupFour, Color.white);
+
+
+        ToggleBlurCard(BlurCard_GroupFive, true);
+        SetBlurCardWeight(BlurCard_GroupFive, 0.2f);
+        SetBlurCardTint(BlurCard_GroupFive, Color.white);
 
 
         ToggleBlurCard(BlurCard_Room3_TrashCan, true);
@@ -156,7 +162,7 @@ public class GameFlow : MonoBehaviour
     {
         ToggleBlurCard(BlurCard_GroupTwo, false);
         Cable.SetActive(true);
-        HDD.SetActive(true);
+        //HDD.SetActive(true);
         TrashCan.SetActive(true);
 
         Act_Three_InteractWithRoom2();
@@ -176,7 +182,7 @@ public class GameFlow : MonoBehaviour
     void Act_Three_InteractWithRoom2()
     {
         StartCoroutine(GameEvent(null, null, Start_Disable_Room3_Cable, Cable_Enter_Room3_ExitCondition));
-        StartCoroutine(GameEvent(null, null, Start_Disable_HDD, HDD_Enter_Room3_ExitCondition));
+        //StartCoroutine(GameEvent(null, null, Start_Disable_HDD, HDD_Enter_Room3_ExitCondition));
         StartCoroutine(GameEvent(null, null, Start_Disable_Room3_Bin, Bin_Enter_Room3_ExitCondition));
         StartCoroutine(GameEvent(null, null, Start_Unvail_Room1, Bin_Enter_Room1_ExitCondition));
     }
