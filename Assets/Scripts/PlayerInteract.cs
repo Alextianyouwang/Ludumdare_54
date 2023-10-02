@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class PlayerInteract : MonoBehaviour
 {
-    private MemoryObj _currentObject,_previousObject;
+    public MemoryObj _currentObject { get; set; }
+    private MemoryObj _previousObject { get; set; }
     public float InteractionDistance = 1.0f;
     
     private void OnEnable()

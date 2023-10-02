@@ -69,17 +69,17 @@ MonoBehaviour:
   m_Active: 1
   settings:
     passTag: RenderObjects
-    Event: 500
+    Event: 1000
     filterSettings:
       RenderQueueType: 1
       LayerMask:
         serializedVersion: 2
-        m_Bits: 256
+        m_Bits: 512
       PassNames: []
-    overrideMaterial: {fileID: 2100000, guid: 187167d305e24dc4cbb8acf59242aa02, type: 2}
+    overrideMaterial: {fileID: 0}
     overrideMaterialPassIndex: 0
-    overrideDepthState: 0
-    depthCompareFunction: 4
+    overrideDepthState: 1
+    depthCompareFunction: 8
     enableWrite: 0
     stencilSettings:
       overrideStencilState: 0
