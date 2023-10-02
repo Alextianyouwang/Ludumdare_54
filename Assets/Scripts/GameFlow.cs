@@ -20,6 +20,8 @@ public class GameFlow : MonoBehaviour
     public GameObject HDD;
     public GameObject Cable;
     public GameObject TrashCan;
+    public GameObject NewCableFromReciept;
+    public GameObject EmptyPrefab;
     public PlayerInteract PlayerInteract;
     public Color BlurCardTint;
     private float _timer;
@@ -64,6 +66,7 @@ public class GameFlow : MonoBehaviour
         HDD.SetActive(false);
         Cable.SetActive(false);
         TrashCan.SetActive(false);
+        NewCableFromReciept.SetActive(false);
 
 
 
@@ -108,7 +111,7 @@ public class GameFlow : MonoBehaviour
     }
     void DisableRoom3_BlurCard_WaitSeconds() 
     {
-        StartCoroutine(GameEvent(SetTimer, Fade_Room3_BlurCard, DisableRoom3_BlurCard, BlurCardFadeCoroutine_ExitCondition));
+        StartCoroutine(GameEvent(SetTimer, Fade_Room3_BlurCard, DisableRoom3_BlurCard, Two_Seconds_ExitCondition));
     }
 
 
@@ -116,10 +119,7 @@ public class GameFlow : MonoBehaviour
     {
         SetBlurCardWeight(BlurCard_GroupOne, Mathf.Lerp(0.2f, 0f, (Time.time - _timer) / 2f));
     }
-    bool BlurCardFadeCoroutine_ExitCondition() 
-    {
-       return Time.time - _timer > 2f;
-    }
+   
     void DisableRoom3_BlurCard() 
     {
         ToggleBlurCard(BlurCard_GroupOne, false);
@@ -139,7 +139,7 @@ public class GameFlow : MonoBehaviour
 
     void Disable_Room2_BlurCard() 
     {
-        StartCoroutine(GameEvent(SetTimer, Fade_Room2_BlurCard, DisableRoom2_BlurCard, BlurCardFadeCoroutine_ExitCondition));
+        StartCoroutine(GameEvent(SetTimer, Fade_Room2_BlurCard, DisableRoom2_BlurCard, Two_Seconds_ExitCondition));
     }
 
     void Fade_Room2_BlurCard() 
@@ -153,14 +153,68 @@ public class GameFlow : MonoBehaviour
         Cable.SetActive(true);
         HDD.SetActive(true);
         TrashCan.SetActive(true);
+
+        Act_Three_InteractWithRoom2();
     }
-
-
 
     bool Act_Two_RealseBeer_ExitCondition() 
     {
       
         return !PlayerInteract._currentHoldingObject  && RoomSwitch.GetRoomContainsPlayer() == RoomSwitch._StaticRooms[1];
+    }
+
+    void Act_Three_InteractWithRoom2()
+    {
+        StartCoroutine(GameEvent(null, null, Check_Room2_Interaction, Act_Three_Interaction_ExitCondition));
+    }
+
+    void Check_Room2_Interaction()
+    {
+        StartCoroutine(GameEvent(SetTimer, null, Delay_Disable_Room3_Cable, One_Seconds_ExitCondition));
+       
+ 
+    }
+
+    void Delay_Disable_Room3_Cable() 
+    {
+        PlayerInteract._currentHoldingObject.ActivateFunction();
+        PlayerInteract._currentHoldingObject.gameObject.SetActive(false);
+        StartCoroutine(GameEvent(SetTimer, Room3_Cable_Unvail_Animation, Disable_Room3_Cable_BlurCard, Two_Seconds_ExitCondition));
+    }
+
+    void Room3_Cable_Unvail_Animation() 
+    {
+        SetBlurCardWeight(BlurCard_Room3_Receipt, Mathf.Lerp(0.2f, 0f, (Time.time - _timer) / 1f));
+    }
+
+    void Disable_Room3_Cable_BlurCard() 
+    {
+        ToggleBlurCard(BlurCard_Room3_Receipt, false);
+        NewCableFromReciept.SetActive(true);
+        NewCableFromReciept.GetComponent<MemoryObj>().PlayEffect(Color.cyan);
+    }
+
+    bool Act_Three_Interaction_ExitCondition()
+    {
+        if (!PlayerInteract._currentHoldingObject)
+            return false;
+        return PlayerInteract._currentHoldingObject.name == "Cable" && RoomSwitch.GetRoomContainsPlayer() == RoomSwitch._StaticRooms[2];
+
+    }
+
+    bool Two_Seconds_ExitCondition()
+    {
+        return Time.time - _timer > 2f;
+    }
+
+    bool One_Seconds_ExitCondition()
+    {
+        return Time.time - _timer > 1f;
+    }
+
+    bool Half_Seconds_ExitCondition()
+    {
+        return Time.time - _timer > 0.5f;
     }
     void SetTimer() 
     {
