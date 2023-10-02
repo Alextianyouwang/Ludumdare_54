@@ -245,6 +245,7 @@ MonoBehaviour:
   NewBinFromRoom3: {fileID: 1708308786}
   EmptyPrefab: {fileID: 4945769014311160106, guid: 34bc4c7b51f6d114c8180936874028dc, type: 3}
   PlayerInteract: {fileID: 150762298}
+  QuestionMark_Prefab: {fileID: 8541400956735423733, guid: 552070045a6e3624ab70f94eb4b9395f, type: 3}
   BlurCardTint: {r: 0.8254717, g: 0.8578439, b: 1, a: 1}
 --- !u!1 &150762291
 GameObject:
@@ -1663,15 +1664,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8323831480870889632, guid: d47ab40b303d0ff4489c6a094148581c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 27.68
+      value: 28.34
       objectReference: {fileID: 0}
     - target: {fileID: 8323831480870889632, guid: d47ab40b303d0ff4489c6a094148581c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.03
+      value: -3.23
       objectReference: {fileID: 0}
     - target: {fileID: 8323831480870889632, guid: d47ab40b303d0ff4489c6a094148581c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -3.32
+      value: -3.75
       objectReference: {fileID: 0}
     - target: {fileID: 8323831480870889632, guid: d47ab40b303d0ff4489c6a094148581c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2264,6 +2265,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2138529004}
     m_Modifications:
+    - target: {fileID: 2659824045549414227, guid: 9bba514c24cd45e449bc2cb2b12c87ef, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6461337418157768405, guid: 9bba514c24cd45e449bc2cb2b12c87ef, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8648873624175871707, guid: 9bba514c24cd45e449bc2cb2b12c87ef, type: 3}
       propertyPath: m_RootOrder
       value: 2

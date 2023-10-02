@@ -17,6 +17,8 @@ public class MemoryObj : MonoBehaviour
 
     public static Action<MemoryObj> OnInteract;
 
+    public Room InThisRoom { get; private set; }
+
     public float DistToPlayer { get; set; } = 0f;
 
     void Awake()
@@ -146,7 +148,14 @@ public class MemoryObj : MonoBehaviour
         }
     }
 
-     void Update()
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.GetComponent<Room>()) 
+        {
+            InThisRoom = other.GetComponent<Room>();
+        }
+    }
+    void Update()
     {
         CheckRoom();
     }

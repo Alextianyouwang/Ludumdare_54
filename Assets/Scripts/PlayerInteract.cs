@@ -8,6 +8,8 @@ public class PlayerInteract : MonoBehaviour
     public MemoryObj _currentHoldingObject { get; set; }
     public MemoryObj _previousHoldingObject { get; set; }
     public MemoryObj _previousObject { get; set; }
+
+    public bool CanReleaseObject { get; set; } = true;
     public float InteractionDistance = 1.0f;
     
     private void OnEnable()
@@ -35,8 +37,12 @@ public class PlayerInteract : MonoBehaviour
             }
             else if (_currentObject._isBeingHold) 
             {
-                _currentObject.GotReleased();
-                _currentHoldingObject = null;
+                if (CanReleaseObject) 
+                {
+                    _currentObject.GotReleased();
+                    _currentHoldingObject = null;
+                }
+     
             }
         }
 
