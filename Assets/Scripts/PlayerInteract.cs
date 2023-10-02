@@ -5,7 +5,8 @@ using UnityEngine;
 public class PlayerInteract : MonoBehaviour
 {
     public MemoryObj _currentObject { get; set; }
-    private MemoryObj _previousObject { get; set; }
+    public MemoryObj _currentHoldingObject { get; set; }
+    public MemoryObj _previousObject { get; set; }
     public float InteractionDistance = 1.0f;
     
     private void OnEnable()
@@ -25,10 +26,17 @@ public class PlayerInteract : MonoBehaviour
             if (!_currentObject)
                 return;
 
-          if ( !_currentObject._isBeingHold)
+            if (!_currentObject._isBeingHold)
+            {
+                _currentHoldingObject = _currentObject;
                 _currentObject.GotHold(transform);
-            else if ( _currentObject._isBeingHold)
+
+            }
+            else if (_currentObject._isBeingHold) 
+            {
                 _currentObject.GotReleased();
+                _currentHoldingObject = null;
+            }
         }
        
         CheckObjectHighlight();

@@ -15,6 +15,11 @@ public class GameFlow : MonoBehaviour
     public GameObject[] BlurCard_Room3_TrashCan;
     public GameObject[] BlurCard_Room3_Receipt;
     public GameObject[] BlurCard_Room3_HDD;
+
+    public GameObject Key;
+    public GameObject HDD;
+    public GameObject Cable;
+    public GameObject TrashCan;
     public PlayerInteract PlayerInteract;
     public Color BlurCardTint;
     private float _timer;
@@ -54,6 +59,11 @@ public class GameFlow : MonoBehaviour
         ToggleBlurCard(BlurCard_Room3_HDD, true);
         SetBlurCardWeight(BlurCard_Room3_HDD, 0.2f);
         SetBlurCardTint(BlurCard_Room3_HDD, Color.white);
+
+        Key.SetActive(false);
+        HDD.SetActive(false);
+        Cable.SetActive(false);
+        TrashCan.SetActive(false);
 
 
 
@@ -98,7 +108,7 @@ public class GameFlow : MonoBehaviour
     }
     void DisableRoom3_BlurCard_WaitSeconds() 
     {
-        StartCoroutine(GameEvent(SetTimer, Fade_Room3_BlurCard, DisableRoom3_BlurCard, DisableRoom3_BlurCard_WaitSeconds_ExitCondition));
+        StartCoroutine(GameEvent(SetTimer, Fade_Room3_BlurCard, DisableRoom3_BlurCard, BlurCardFadeCoroutine_ExitCondition));
     }
 
 
@@ -106,7 +116,7 @@ public class GameFlow : MonoBehaviour
     {
         SetBlurCardWeight(BlurCard_GroupOne, Mathf.Lerp(0.2f, 0f, (Time.time - _timer) / 2f));
     }
-    bool DisableRoom3_BlurCard_WaitSeconds_ExitCondition() 
+    bool BlurCardFadeCoroutine_ExitCondition() 
     {
        return Time.time - _timer > 2f;
     }
@@ -119,8 +129,39 @@ public class GameFlow : MonoBehaviour
         SetBlurCardTint(BlurCard_Room3_Receipt, BlurCardTint);
 
         SetBlurCardTint(BlurCard_Room3_HDD, BlurCardTint);
+
+        Act_Two_ReleaseBeer_Room2();
+    }
+    void Act_Two_ReleaseBeer_Room2() 
+    {
+        StartCoroutine(GameEvent(null, null, Disable_Room2_BlurCard, Act_Two_RealseBeer_ExitCondition));
     }
 
+    void Disable_Room2_BlurCard() 
+    {
+        StartCoroutine(GameEvent(SetTimer, Fade_Room2_BlurCard, DisableRoom2_BlurCard, BlurCardFadeCoroutine_ExitCondition));
+    }
+
+    void Fade_Room2_BlurCard() 
+    {
+        SetBlurCardWeight(BlurCard_GroupTwo, Mathf.Lerp(0.2f, 0f, (Time.time - _timer) / 2f));
+    }
+
+    void DisableRoom2_BlurCard ()
+    {
+        ToggleBlurCard(BlurCard_GroupTwo, false);
+        Cable.SetActive(true);
+        HDD.SetActive(true);
+        TrashCan.SetActive(true);
+    }
+
+
+
+    bool Act_Two_RealseBeer_ExitCondition() 
+    {
+      
+        return !PlayerInteract._currentHoldingObject  && RoomSwitch.GetRoomContainsPlayer() == RoomSwitch._StaticRooms[1];
+    }
     void SetTimer() 
     {
         _timer = Time.time;
