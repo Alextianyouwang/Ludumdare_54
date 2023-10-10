@@ -1,9 +1,7 @@
 
 using UnityEngine;
 using System;
-using System.Net.NetworkInformation;
 using System.Collections;
-using Unity.VisualScripting;
 
 public class RoomSwitch : MonoBehaviour
 {
@@ -11,12 +9,15 @@ public class RoomSwitch : MonoBehaviour
     public Room[] Rooms;
     public static Room[] _StaticRooms;
 
-    public GameObject MainCam;
     public AnimationCurve SlidingAnimationCurve;
-    public float CameraStartPosYOffset = 1f;
-    public static Func<Vector3> OnStartSlide;
-    public static Func<Vector3,Vector3,Vector3> OnSliding;
-    public static Func<Vector3> OnEndSlide;
+
+    public static Func<Vector3> OnRequestPlayerPos;
+    public static Action<Vector3> OnSliding;
+    public static Action OnEndSlide;
+
+
+    public static Func<Vector3> OnRequestCameraPos;
+    public static Action<Vector3> OnSetCameraPos;
 
     private bool _hasEnteredSliding = false;
     private Bounds _roomBounds = new Bounds();
@@ -26,14 +27,8 @@ public class RoomSwitch : MonoBehaviour
     private Vector2 _slidingTargetMousePos = Vector2.zero;
     private Vector3 _startCameraPos = Vector3.zero;
     
-
-    private int _currentRoomIndex = 0;
     private Room _currentRoom;
     private Coroutine _slidingAnimation_Co;
-    
-
-    
-
 
     void Start()
     {
@@ -53,8 +48,8 @@ public class RoomSwitch : MonoBehaviour
     {
         
         _roomBounds = Utility.GetObjectBound(Rooms[0].gameObject);
-        _startCameraPos = new Vector3(_roomBounds.center.x, _roomBounds.center.y + CameraStartPosYOffset, MainCam.transform.position.z);
-        MainCam.transform.position = _startCameraPos;
+        _startCameraPos = new Vector3(_roomBounds.center.x, OnRequestCameraPos().y, OnRequestCameraPos().z);
+        OnSetCameraPos?.Invoke(_startCameraPos);
 
         for (int i = 0; i < Rooms.Length; i++) 
         {
@@ -65,12 +60,12 @@ public class RoomSwitch : MonoBehaviour
 
     void SetStartRoom(int num) 
     {
-        Vector3 initialCamerapos = MainCam.transform.position;
-        Vector3 initialPlayerPos = OnStartSlide.Invoke();
+        Vector3 initialCamerapos = OnRequestCameraPos();
+        Vector3 initialPlayerPos = OnRequestPlayerPos.Invoke();
         Vector3 diff = Rooms[num - 1].transform.position - Rooms[0].transform.position;
 
-        OnSliding.Invoke(initialPlayerPos + diff, initialPlayerPos);
-        MainCam.transform.position = initialCamerapos + diff;
+        OnSliding.Invoke(initialPlayerPos + diff);
+        OnSetCameraPos?.Invoke( initialCamerapos + diff);
     }
 
     void UpdateSlidingControl()
@@ -87,13 +82,13 @@ public class RoomSwitch : MonoBehaviour
             Vector2 diff = _slidingTargetMousePos- _slidingInitialMousePos;
             float percentage = diff.x / Screen.width;
 
-            if (Mathf.Abs( percentage) > 0.1f && !_hasEnteredSliding) 
+            if (Mathf.Abs(percentage) > 0.1f && !_hasEnteredSliding)
             {
-                _hasEnteredSliding = true;
-                if (_slidingAnimation_Co != null)
+
+                if (_slidingAnimation_Co != null) 
                     StopCoroutine(_slidingAnimation_Co);
-   
                 _slidingAnimation_Co = StartCoroutine(RoomSlideAnimation(0.5f,percentage > 0));
+                _hasEnteredSliding = true;
             }
         }
 
@@ -107,39 +102,36 @@ public class RoomSwitch : MonoBehaviour
         float process = 0;
         Room activeRoom = GetRoomContainsPlayer();
         Vector3 slidingTargetCameraPos = Vector3.zero;
-        Vector3 slidingInitialCamPos = MainCam.transform.position;
-        Vector3 slidingInitialPlayerPos = OnStartSlide.Invoke();
+        Vector3 slidingInitialCamPos = OnRequestCameraPos();
+        Vector3 slidingInitialPlayerPos = OnRequestPlayerPos();
+        Vector3 diff = slidingInitialPlayerPos - slidingInitialCamPos;
         float boundOffset = (toRight ? -1 : 1) * _roomBounds.extents.x * 2;
-        if (boundOffset + slidingInitialPlayerPos.x < Rooms[0].transform.position.x - _roomBounds.extents.x
-               || boundOffset + slidingInitialPlayerPos.x > Rooms[0].transform.position.x + _roomBounds.extents.x * 2 * Rooms.Length - _roomBounds.extents.x)
-            boundOffset = 0;
         if (activeRoom) 
         {
            float camOffset = 
                 Mathf.Min(
                 Mathf.Max(
-                    activeRoom.transform.position.x + boundOffset,
+                    Utility.GetObjectBound(activeRoom.gameObject).center.x + boundOffset,
                     _startCameraPos.x),
-                    _startCameraPos.x + _roomBounds.extents.x * 2 * (Rooms.Length - 1));
+                    _startCameraPos.x + _roomBounds.extents.x * 2 * (Rooms.Length - 1));;
             slidingTargetCameraPos = new Vector3(camOffset,slidingInitialCamPos.y,slidingInitialCamPos.z) ;
         }
         else
             Debug.LogWarning("No Rooms Detact Player");
 
+    
 
         while (process < timeToComplete)
         {
             process += Time.deltaTime;
-
+   
             float percentage = SlidingAnimationCurve.Evaluate(process / timeToComplete);
             Vector3 finalCamPos = Vector3.Lerp (slidingInitialCamPos,slidingTargetCameraPos,percentage) ;
-            Vector3 finalPlayerPos = slidingInitialPlayerPos + boundOffset * Vector3.right;
-            if (boundOffset != 0)
-                OnSliding?.Invoke( finalPlayerPos,slidingInitialPlayerPos);
-            MainCam.transform.position = finalCamPos;
-
-
+            Vector3 finalPlayerPos = finalCamPos + diff;
+            OnSetCameraPos?.Invoke(finalCamPos);
+            OnSliding?.Invoke( finalPlayerPos);
             yield return null;
+
         }
         _hasEnteredSliding = false;
         OnEndSlide?.Invoke();
