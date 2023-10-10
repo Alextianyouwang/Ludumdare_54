@@ -31,6 +31,11 @@ public class RoomSwitch : MonoBehaviour
     private Room _currentRoom;
     private Coroutine _slidingAnimation_Co;
 
+    private int _slideActionAccumulator = 1;
+    private float _slideActionTriggerPercentage = 0;
+    private float _slidePercentage = 0;
+    private float _slidePercentage_prev = 0;
+
     void Start()
     {
         Preparation();
@@ -82,17 +87,21 @@ public class RoomSwitch : MonoBehaviour
         {
             _slidingTargetMousePos = Input.mousePosition;
             Vector2 diff = _slidingTargetMousePos- _slidingInitialMousePos;
-            float percentage = diff.x / Screen.width;
-
-            if (Mathf.Abs(percentage) > 0.1f && !_hasEnteredSliding)
+            _slideActionTriggerPercentage = diff.x / Screen.width;
+            if (Mathf.Abs(_slideActionTriggerPercentage) > 0.1f && !_hasEnteredSliding)
             {
 
                 if (_slidingAnimation_Co != null) 
                     StopCoroutine(_slidingAnimation_Co);
-                _slidingAnimation_Co = StartCoroutine(RoomSlideAnimation(0.5f,percentage > 0));
+                _slidingAnimation_Co = StartCoroutine(RoomSlideAnimation(0.5f,_slideActionTriggerPercentage > 0));
+                _slideActionAccumulator++;
                 _hasEnteredSliding = true;
             }
         }
+        _slidePercentage = Mathf.Sign(_slideActionTriggerPercentage);
+        if (_slidePercentage != _slidePercentage_prev)
+            _slideActionAccumulator = 1;
+        _slidePercentage_prev = _slidePercentage;
 
         if (Input.GetMouseButtonUp(1))
             _hasEnteredSliding = false;
@@ -107,7 +116,7 @@ public class RoomSwitch : MonoBehaviour
         Vector3 slidingInitialCamPos = OnRequestCameraPos();
         Vector3 slidingInitialPlayerPos = OnRequestPlayerPos();
         Vector3 diff = slidingInitialPlayerPos - slidingInitialCamPos;
-        float boundOffset = (toRight ? -1 : 1) * _roomBounds.extents.x * 2;
+        float boundOffset = (toRight ? -1 : 1) * _roomBounds.extents.x * 2 * _slideActionAccumulator;
         if (activeRoom) 
         {
            float camOffset = 
@@ -137,6 +146,7 @@ public class RoomSwitch : MonoBehaviour
 
         }
         _hasEnteredSliding = false;
+        _slideActionAccumulator = 1;
         OnEndSlide?.Invoke();
 
     }
