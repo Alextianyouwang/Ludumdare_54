@@ -12,6 +12,7 @@ public class RoomSwitch : MonoBehaviour
     public AnimationCurve SlidingAnimationCurve;
 
     public static Func<Vector3> OnRequestPlayerPos;
+    public static Action OnStartSlidePlayer;
     public static Action<Vector3> OnSliding;
     public static Action OnEndSlide;
 
@@ -65,6 +66,7 @@ public class RoomSwitch : MonoBehaviour
         Vector3 diff = Rooms[num - 1].transform.position - Rooms[0].transform.position;
 
         OnSliding.Invoke(initialPlayerPos + diff);
+        OnEndSlide();
         OnSetCameraPos?.Invoke( initialCamerapos + diff);
     }
 
@@ -119,6 +121,7 @@ public class RoomSwitch : MonoBehaviour
         else
             Debug.LogWarning("No Rooms Detact Player");
 
+        OnStartSlidePlayer?.Invoke();
     
 
         while (process < timeToComplete)

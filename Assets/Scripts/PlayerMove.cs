@@ -7,9 +7,9 @@ public class PlayerMove : MonoBehaviour
     private Vector3 _horizontal, _vertical;
     [SerializeField] private float _moveSpeed = 1;
     private Rigidbody _rb;
-    private bool _allowMovement = true;
+    private bool _allowMovement = true,_allowShareMovementStats = true;
     public static Action<float> OnSharePlayerSpeed;
-    public static Action<float> OnShareDistanceMoved;
+    public static Action<float> OnShareTotalDistTravel;
     Vector3 _currentpos, _prevPos;
     private float _totalDist = 0;
 
@@ -21,9 +21,10 @@ public class PlayerMove : MonoBehaviour
     }
     private void Update()
     {
-        GetSpeed();
+        if(_allowShareMovementStats)
+            GetSpeed();
         if (_allowMovement)
-        CheckInput();
+            CheckInput();
     }
 
     void GetSpeed() 
@@ -32,7 +33,7 @@ public class PlayerMove : MonoBehaviour
         float diff = (_currentpos - _prevPos).magnitude;
         _totalDist += diff;
         OnSharePlayerSpeed?.Invoke(diff/Time.deltaTime);
-        OnShareDistanceMoved?.Invoke(_totalDist);
+        OnShareTotalDistTravel?.Invoke(_totalDist);
         _prevPos = _currentpos;
        
     }
@@ -42,6 +43,7 @@ public class PlayerMove : MonoBehaviour
         RoomSwitch.OnRequestPlayerPos += SharePosition;
         RoomSwitch.OnSliding += PassiveMove;
         RoomSwitch.OnEndSlide += ReturnBackToNormalMove;
+        RoomSwitch.OnStartSlidePlayer += StartPassiveMove;
     }
     private void OnDisable()
     {
@@ -49,12 +51,21 @@ public class PlayerMove : MonoBehaviour
         RoomSwitch.OnRequestPlayerPos -=  SharePosition;
         RoomSwitch.OnSliding -= PassiveMove;
         RoomSwitch.OnEndSlide -= ReturnBackToNormalMove;
+        RoomSwitch.OnStartSlidePlayer -= StartPassiveMove;
+
 
     }
 
     Vector3 SharePosition() 
     {
         return transform.position;
+    }
+
+    void StartPassiveMove() 
+    {
+     
+        _allowShareMovementStats = false;
+
     }
     void PassiveMove(Vector3 target) 
     {
@@ -63,7 +74,9 @@ public class PlayerMove : MonoBehaviour
     }
     void ReturnBackToNormalMove() 
     {
-        
+        _prevPos = transform.position;
+        _allowShareMovementStats = true;
+
     }
     private void FixedUpdate()
     {

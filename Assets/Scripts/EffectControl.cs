@@ -12,11 +12,11 @@ public class EffectControl : MonoBehaviour
     }
     private void OnEnable()
     {
-        PlayerMove.OnShareDistanceMoved += ChangePlayerMaterialPlaySpeed;
+        PlayerMove.OnShareTotalDistTravel += ChangePlayerMaterialPlaySpeed;
     }
     private void OnDisable()
     {
-        PlayerMove.OnShareDistanceMoved-= ChangePlayerMaterialPlaySpeed;
+        PlayerMove.OnShareTotalDistTravel-= ChangePlayerMaterialPlaySpeed;
     }
 
     void ChangePlayerMaterialPlaySpeed(float speed) 

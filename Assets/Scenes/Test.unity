@@ -173,7 +173,6 @@ MonoBehaviour:
   - {fileID: 990663232}
   - {fileID: 201188048}
   - {fileID: 558907059}
-  MainCam: {fileID: 1912426275}
   SlidingAnimationCurve:
     serializedVersion: 2
     m_Curve:
@@ -198,7 +197,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  CameraStartPosYOffset: 2.11
 --- !u!114 &48062636
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -304,7 +302,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5ef2b56efd1d56b46853b86a6913ba3e, type: 2}
+  - {fileID: 2100000, guid: 8f2a3e616de32b94b8725e76df05b3a6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
