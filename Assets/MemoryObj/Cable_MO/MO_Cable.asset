@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   roomSection:
   - DisplayObject: {fileID: 6049174616062511643, guid: 27117ff925a091047a8f4748aa5cb878, type: 3}
-    DodoWhenEnter: {fileID: 0}
+    DodoWhenEnter: {fileID: 11400000, guid: b5674ccc2ac410e42add63cad84129d9, type: 2}
   - DisplayObject: {fileID: 256154827968213441, guid: 2fff781a6dcce1c4188fd4467ffc0580, type: 3}
     DodoWhenEnter: {fileID: 0}
   - DisplayObject: {fileID: 4469614894616043150, guid: bdc65136ebb7c894f996e1f528523701, type: 3}

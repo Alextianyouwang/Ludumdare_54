@@ -8,7 +8,7 @@ public class MemoryObj : MonoBehaviour
     public bool _isBeingHold { get; private set; } = false;
     public bool _canBeRelease { get; private set; } = false;
 
-    public MemObjData objData;
+    public MemObjData ObjData;
     private GameObject[] _memory_Objs_Prefab;
     private GameObject[] _memory_Objs;
 
@@ -33,7 +33,7 @@ public class MemoryObj : MonoBehaviour
     
     void PrepareMemObjs()
     {
-        _memory_Objs_Prefab = objData.roomSection.Select(x => x.DisplayObject).ToArray();
+        _memory_Objs_Prefab = ObjData.roomSection.Select(x => x.DisplayObject).ToArray();
         _memory_Objs = new GameObject[_memory_Objs_Prefab.Length];
         for (int i = 0; i < _memory_Objs.Length; i++)
         {
@@ -134,6 +134,7 @@ public class MemoryObj : MonoBehaviour
             _memory_Objs[0].transform.position = transform.position;
             _memory_Objs[1].SetActive(false);
             _memory_Objs[2].SetActive(false);
+            ObjData.roomSection[0].DodoWhenEnter?.Act(this);
         }
         else if (RoomSwitch.GetRoomContainsPlayer() == RoomSwitch._StaticRooms[1])
         {
