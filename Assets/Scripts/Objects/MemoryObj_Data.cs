@@ -2,7 +2,7 @@ using UnityEngine;
 using System;
 
 [CreateAssetMenu (menuName = "Memory Object")]
-public class MemObjData : ScriptableObject
+public class MemoryObj_Data : ScriptableObject
 {
     [SerializeField]
     public RoomSection[] roomSection;

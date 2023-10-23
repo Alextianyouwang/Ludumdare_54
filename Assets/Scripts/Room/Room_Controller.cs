@@ -3,7 +3,7 @@ using UnityEngine;
 using System;
 using System.Collections;
 
-public class RoomSwitch : MonoBehaviour
+public class Room_Controller : MonoBehaviour
 {
 
     public Room[] Rooms;

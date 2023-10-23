@@ -2,25 +2,16 @@ using System;
 using System.Linq;
 using UnityEngine;
 
-public class PlayerInteract : MonoBehaviour
+public class Player_InteractionManager : MonoBehaviour
 {
-    public MemoryObj _currentObject { get; set; }
-    public MemoryObj _currentHoldingObject { get; set; }
-    public MemoryObj _previousHoldingObject { get; set; }
-    public MemoryObj _previousObject { get; set; }
+    public MemoryObj_Interact _currentObject { get; set; }
+    public MemoryObj_Interact _currentHoldingObject { get; set; }
+    public MemoryObj_Interact _previousHoldingObject { get; set; }
+    public MemoryObj_Interact _previousObject { get; set; }
 
     public bool CanReleaseObject { get; set; } = true;
     public float InteractionDistance = 1.0f;
     
-    private void OnEnable()
-    {
-        MemoryObj.OnInteract += GetMemoryObj;
-    }
-    private void OnDisable()
-    {
-        
-        MemoryObj.OnInteract -= GetMemoryObj;
-    }
     public void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape)) 
@@ -56,31 +47,32 @@ public class PlayerInteract : MonoBehaviour
     void CheckObjectHighlight() 
     {
         _currentObject = GetCurrentMemoryObj();
-        _currentObject?.Highlight(true);
+        _currentObject?.GetComponent<MemoryObj_Effect>()?.Highlight(true);
         if (_currentObject == null && _previousObject != null)
-            _previousObject.Highlight(false);
-        else if (_currentObject != _previousObject && _currentObject != null && _previousObject != null) 
-            _previousObject.Highlight(false);
-
+            _previousObject?.GetComponent<MemoryObj_Effect>()?.Highlight(false);
+        else if (_currentObject != _previousObject && _currentObject != null && _previousObject != null)
+            _previousObject?.GetComponent<MemoryObj_Effect>()?.Highlight(false);
         _previousObject = _currentObject;
     }
 
-    MemoryObj GetCurrentMemoryObj() 
+    MemoryObj_Interact GetCurrentMemoryObj() 
     {
         Collider[] objs = Physics.OverlapSphere(transform.position, InteractionDistance, LayerMask.GetMask("Interactable"));
-        MemoryObj[] mems = objs.Select(x => x.GetComponent<MemoryObj>()).ToArray();
+        MemoryObj_Interact[] mems = objs.Select(x => x.GetComponent<MemoryObj_Interact>()).ToArray();
         if (mems.Length == 0)
             return null;
         float dist = float.MaxValue;
-        foreach (MemoryObj m in mems) 
+        MemoryObj_Interact selected = null;
+        foreach (MemoryObj_Interact m in mems) 
         {
-            dist = Mathf.Min(Vector3.Distance(transform.position, m.transform.position), dist);
-            m.DistToPlayer = dist;
+            float current = Vector3.Distance(transform.position, m.transform.position);
+            if (current < dist) 
+            {
+                dist = current;
+                selected = m;
+            }
         }
-        return mems.First(x => x.DistToPlayer == dist && x != null);
+        return selected;
     }
-    void GetMemoryObj(MemoryObj obj) 
-    {
-        print(obj.name);
-    }
+
 }

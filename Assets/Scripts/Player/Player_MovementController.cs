@@ -2,7 +2,7 @@
 using UnityEngine;
 using System;
 
-public class PlayerMove : MonoBehaviour
+public class Player_MovementController : MonoBehaviour
 {
     private Vector3 _horizontal, _vertical;
     [SerializeField] private float _moveSpeed = 1;
@@ -40,18 +40,18 @@ public class PlayerMove : MonoBehaviour
     private void OnEnable()
     {
 
-        RoomSwitch.OnRequestPlayerPos += SharePosition;
-        RoomSwitch.OnSliding += PassiveMove;
-        RoomSwitch.OnEndSlide += ReturnBackToNormalMove;
-        RoomSwitch.OnStartSlidePlayer += StartPassiveMove;
+        Room_Controller.OnRequestPlayerPos += SharePosition;
+        Room_Controller.OnSliding += PassiveMove;
+        Room_Controller.OnEndSlide += ReturnBackToNormalMove;
+        Room_Controller.OnStartSlidePlayer += StartPassiveMove;
     }
     private void OnDisable()
     {
 
-        RoomSwitch.OnRequestPlayerPos -=  SharePosition;
-        RoomSwitch.OnSliding -= PassiveMove;
-        RoomSwitch.OnEndSlide -= ReturnBackToNormalMove;
-        RoomSwitch.OnStartSlidePlayer -= StartPassiveMove;
+        Room_Controller.OnRequestPlayerPos -=  SharePosition;
+        Room_Controller.OnSliding -= PassiveMove;
+        Room_Controller.OnEndSlide -= ReturnBackToNormalMove;
+        Room_Controller.OnStartSlidePlayer -= StartPassiveMove;
 
 
     }

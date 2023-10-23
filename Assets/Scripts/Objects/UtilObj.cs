@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class UtilObj : MonoBehaviour
 {
-    private MemoryObj currentObj;
+    private MemoryObj_Core currentObj;
     private void Start()
     {
         
@@ -18,18 +18,18 @@ public class UtilObj : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.GetComponent<MemoryObj>()) 
+        if (other.GetComponent<MemoryObj_Core>()) 
         {
-            currentObj = other.GetComponent<MemoryObj>();
-            currentObj.OnRelease += MemoryObjRelease;
+            currentObj = other.GetComponent<MemoryObj_Core>();
+           // currentObj.OnRelease += MemoryObjRelease;
         }
     }
     private void OnTriggerExit(Collider other)
     {
-        if (other.GetComponent<MemoryObj>())
+        if (other.GetComponent<MemoryObj_Core>())
         {
-            currentObj = other.GetComponent<MemoryObj>();
-            currentObj.OnRelease -= MemoryObjRelease;
+            currentObj = other.GetComponent<MemoryObj_Core>();
+           // currentObj.OnRelease -= MemoryObjRelease;
             currentObj = null;
         }
     }

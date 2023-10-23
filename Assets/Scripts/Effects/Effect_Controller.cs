@@ -1,22 +1,22 @@
 
 using UnityEngine;
 
-public class EffectControl : MonoBehaviour
+public class Effect_Controller : MonoBehaviour
 {
     private Renderer _playerRenderer;
     private MaterialPropertyBlock _playerMbp;
     private void Awake()
     {
         _playerMbp = new MaterialPropertyBlock();
-        _playerRenderer = FindObjectOfType<PlayerMove>().GetComponent<Renderer>();
+        _playerRenderer = FindObjectOfType<Player_MovementController>().GetComponent<Renderer>();
     }
     private void OnEnable()
     {
-        PlayerMove.OnShareTotalDistTravel += ChangePlayerMaterialPlaySpeed;
+        Player_MovementController.OnShareTotalDistTravel += ChangePlayerMaterialPlaySpeed;
     }
     private void OnDisable()
     {
-        PlayerMove.OnShareTotalDistTravel-= ChangePlayerMaterialPlaySpeed;
+        Player_MovementController.OnShareTotalDistTravel-= ChangePlayerMaterialPlaySpeed;
     }
 
     void ChangePlayerMaterialPlaySpeed(float speed) 
