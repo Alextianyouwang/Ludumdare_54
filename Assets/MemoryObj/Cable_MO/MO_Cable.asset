@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a0b7b8a8edf8d141be1707b80444164, type: 3}
+  m_Name: MO_Cable
+  m_EditorClassIdentifier: 
+  roomSection:
+  - DisplayObject: {fileID: 6049174616062511643, guid: 27117ff925a091047a8f4748aa5cb878, type: 3}
+    DodoWhenEnter: {fileID: 0}
+  - DisplayObject: {fileID: 256154827968213441, guid: 2fff781a6dcce1c4188fd4467ffc0580, type: 3}
+    DodoWhenEnter: {fileID: 0}
+  - DisplayObject: {fileID: 4469614894616043150, guid: bdc65136ebb7c894f996e1f528523701, type: 3}
+    DodoWhenEnter: {fileID: 0}
+  ObjectToCombine: {fileID: 0}

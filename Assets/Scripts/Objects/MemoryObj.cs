@@ -2,15 +2,15 @@
 using UnityEngine;
 using System;
 using System.Collections;
-
-
+using System.Linq;
 public class MemoryObj : MonoBehaviour
 {
     public bool _isBeingHold { get; private set; } = false;
     public bool _canBeRelease { get; private set; } = false;
 
-    public GameObject[] Memory_Objs_Prefab;
-    public GameObject[] _memory_Objs { get; set; }
+    public MemObjData objData;
+    private GameObject[] _memory_Objs_Prefab;
+    private GameObject[] _memory_Objs;
 
     public Canvas TestCanvas;
     public GameObject ActivateEffect;
@@ -30,12 +30,14 @@ public class MemoryObj : MonoBehaviour
 
     }
 
+    
     void PrepareMemObjs()
     {
-        _memory_Objs = new GameObject[Memory_Objs_Prefab.Length];
+        _memory_Objs_Prefab = objData.roomSection.Select(x => x.DisplayObject).ToArray();
+        _memory_Objs = new GameObject[_memory_Objs_Prefab.Length];
         for (int i = 0; i < _memory_Objs.Length; i++)
         {
-            _memory_Objs[i] = Instantiate(Memory_Objs_Prefab[i]);
+            _memory_Objs[i] = Instantiate(_memory_Objs_Prefab[i]);
             _memory_Objs[i].SetActive(false);
             _memory_Objs[i].transform.parent = transform;
         }
